@@ -1,0 +1,28 @@
+services:
+  api:
+    image: shandralor/1-step-yt-dl-server:latest
+    ports:
+      - "8000:8000"
+  
+    command: "uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    restart: always
+    networks:
+      - app
+    container_name: api
+
+  ui:
+    image: shandralor/1-step-yt-dl:latest
+
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    
+    restart: always
+    networks:
+      - app
+    container_name: ui
+
+networks:
+  app:
+    driver: bridge
